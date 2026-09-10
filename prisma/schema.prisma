@@ -1,0 +1,135 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model Admin {
+  id           String   @id @default(cuid())
+  email        String   @unique
+  passwordHash String
+  name         String   @default("Jadora Admin")
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+}
+
+model Package {
+  id          String    @id @default(cuid())
+  name        String
+  maxGirls    Int
+  durationHrs Int
+  price       Float
+  description String    @default("")
+  featured    Boolean   @default(false)
+  active      Boolean   @default(true)
+  sortOrder   Int       @default(0)
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  bookings    Booking[]
+}
+
+model Service {
+  id          String   @id @default(cuid())
+  title       String
+  description String   @default("")
+  icon        String   @default("sparkles")
+  active      Boolean  @default(true)
+  sortOrder   Int      @default(0)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model Customer {
+  id        String    @id @default(cuid())
+  name      String
+  email     String
+  phone     String    @default("")
+  notes     String    @default("")
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  bookings  Booking[]
+  messages  Message[]
+
+  @@unique([email])
+}
+
+model Booking {
+  id            String   @id @default(cuid())
+  customerId    String
+  packageId     String
+  date          String
+  timeSlot      String
+  girlsCount    Int      @default(1)
+  status        String   @default("pending")
+  adminNotes    String   @default("")
+  customerNotes String   @default("")
+  totalPrice    Float    @default(0)
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  customer Customer @relation(fields: [customerId], references: [id], onDelete: Cascade)
+  package  Package  @relation(fields: [packageId], references: [id])
+
+  @@unique([date, timeSlot])
+  @@index([status])
+  @@index([date])
+}
+
+model AvailabilityBlock {
+  id        String   @id @default(cuid())
+  date      String
+  timeSlot  String  @default("")
+  reason    String   @default("")
+  createdAt DateTime @default(now())
+
+  @@unique([date, timeSlot])
+  @@index([date])
+}
+
+model WorkingHours {
+  id        String  @id @default(cuid())
+  dayOfWeek Int
+  startTime String  @default("10:00")
+  endTime   String  @default("18:00")
+  enabled   Boolean @default(true)
+}
+
+model TimeSlotConfig {
+  id       String  @id @default(cuid())
+  time     String  @unique
+  enabled  Boolean @default(true)
+  sortOrder Int    @default(0)
+}
+
+model GalleryImage {
+  id        String   @id @default(cuid())
+  url       String
+  caption   String   @default("")
+  active    Boolean  @default(true)
+  sortOrder Int      @default(0)
+  createdAt DateTime @default(now())
+}
+
+model SiteContent {
+  id        String   @id @default(cuid())
+  key       String   @unique
+  value     String
+  updatedAt DateTime @updatedAt
+}
+
+model Message {
+  id         String   @id @default(cuid())
+  customerId String?
+  name       String
+  email      String
+  phone      String   @default("")
+  subject    String   @default("")
+  body       String
+  read       Boolean  @default(false)
+  createdAt  DateTime @default(now())
+
+  customer Customer? @relation(fields: [customerId], references: [id])
+}

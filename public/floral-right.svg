@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="420" height="520" viewBox="0 0 420 520" fill="none">
+  <defs>
+    <linearGradient id="petal" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#FCE0E8" stop-opacity="0.9"/>
+      <stop offset="100%" stop-color="#EDA3B9" stop-opacity="0.55"/>
+    </linearGradient>
+  </defs>
+  <g opacity="0.7">
+    <path d="M260 40c40 20 70 70 50 120-30-20-70-30-110-20 20-40 30-80 60-100z" fill="url(#petal)"/>
+    <path d="M320 120c35 35 30 90-10 120-10-35-35-65-70-80 30-20 55-30 80-40z" fill="#E08180" opacity="0.35"/>
+    <path d="M200 80c25 15 40 45 30 75-20-10-45-15-70-10 15-25 25-50 40-65z" fill="#C37EAB" opacity="0.25"/>
+    <ellipse cx="280" cy="130" rx="8" ry="8" fill="#AB4F82" opacity="0.35"/>
+    <path d="M300 200c-20 40-10 90 20 120" stroke="#C37EAB" stroke-width="2" opacity="0.35" fill="none"/>
+    <path d="M340 280c30 20 50 60 35 100-25-15-55-25-90-15 20-35 30-65 55-85z" fill="url(#petal)"/>
+    <path d="M380 360c25 30 15 75-20 95-5-30-25-55-55-70 30-10 55-15 75-25z" fill="#EDA3B9" opacity="0.4"/>
+  </g>
+</svg>
