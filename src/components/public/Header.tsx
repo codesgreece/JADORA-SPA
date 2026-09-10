@@ -13,6 +13,7 @@ const links = [
   { href: "#home", key: "navHome", fallback: "Αρχική" },
   { href: "#services", key: "navServices", fallback: "Υπηρεσίες" },
   { href: "#packages", key: "navPackages", fallback: "Πακέτα" },
+  { href: "#partners", key: "navPartners", fallback: "Συνεργάτες" },
   { href: "#booking", key: "navCalendar", fallback: "Ημερολόγιο" },
   { href: "#about", key: "navAbout", fallback: "Σχετικά" },
   { href: "#contact", key: "navContact", fallback: "Επικοινωνία" },
