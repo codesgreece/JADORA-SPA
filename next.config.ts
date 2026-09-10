@@ -6,6 +6,9 @@ const nextConfig: NextConfig = {
     contentDispositionType: "attachment",
     contentSecurityPolicy: "default-src 'self'; script-src 'none'; sandbox;",
   },
+  outputFileTracingIncludes: {
+    "/**": ["./prisma/seed.db", "./prisma/schema.prisma"],
+  },
 };
 
 export default nextConfig;
