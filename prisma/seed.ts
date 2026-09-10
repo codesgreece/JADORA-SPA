@@ -21,6 +21,7 @@ const siteContent: Record<string, string> = {
   vibeText: "More than a party it's a vibe ♡",
   servicesTitle: "Οι υπηρεσίες μας",
   packagesTitle: "Πακέτα & Τιμές",
+  extrasTitle: "Extras / Έξτρα υπηρεσίες",
   partnersTitle: "Οι συνεργάτες μας",
   galleryTitle: "Στιγμές J’ADORA",
   aboutTitle: "Σχετικά με εμάς",

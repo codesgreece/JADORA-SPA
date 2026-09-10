@@ -20,7 +20,11 @@ export default async function HomePage() {
       <Hero content={content} packages={packages} />
       <FeatureBar vibeText={content.vibeText} />
       <ServicesSection title={content.servicesTitle} services={services} />
-      <PackagesSection title={content.packagesTitle} packages={packages} />
+      <PackagesSection
+        title={content.packagesTitle}
+        packages={packages}
+        extrasTitle={content.extrasTitle}
+      />
       <PartnersSection title={content.partnersTitle} />
       <GallerySection title={content.galleryTitle} images={gallery} />
       <AboutContact content={content} />

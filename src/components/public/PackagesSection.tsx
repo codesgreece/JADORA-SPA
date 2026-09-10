@@ -11,12 +11,37 @@ type Package = {
   featured: boolean;
 };
 
+export const PACKAGE_EXTRAS = [
+  {
+    id: "lunch-boxes",
+    title: "Ατομικά lunch boxes",
+    description: "Προσωπικά lunch boxes για κάθε παιδί του party.",
+  },
+  {
+    id: "pro-photos",
+    title: "Επαγγελματική φωτογράφιση + άλμπουμ",
+    description: "Επαγγελματική φωτογράφιση και δώρο άλμπουμ 20 φωτογραφιών.",
+  },
+  {
+    id: "candy-bar",
+    title: "Candy bar",
+    description: "Candy bar με cake pops και θεματικά μπισκότα.",
+  },
+  {
+    id: "boys-activity",
+    title: "Δημιουργική απασχόληση για αγόρια",
+    description: "Δημιουργική απασχόληση για τα αγόρια του party.",
+  },
+] as const;
+
 export function PackagesSection({
   title,
   packages,
+  extrasTitle,
 }: {
   title?: string;
   packages: Package[];
+  extrasTitle?: string;
 }) {
   return (
     <section id="packages" className="relative mx-auto max-w-7xl px-4 py-12 md:px-8">
@@ -53,16 +78,62 @@ export function PackagesSection({
                 {pkg.description}
               </p>
             )}
-            <Heart
-              size={18}
-              className="mt-6 text-mauve"
-              strokeWidth={1.5}
-            />
+            <Heart size={18} className="mt-6 text-mauve" strokeWidth={1.5} />
             <a href="#booking" className="btn-primary mt-5 text-sm">
               Κράτηση
             </a>
           </article>
         ))}
+      </div>
+
+      <div id="extras" className="mx-auto mt-14 max-w-5xl">
+        <div className="text-center">
+          <h3 className="font-serif text-2xl text-dark-berry md:text-[1.75rem]">
+            {extrasTitle || "Extras / Έξτρα υπηρεσίες"}
+          </h3>
+          <div className="heart-divider mx-auto justify-center">
+            <span>♡</span>
+          </div>
+          <p className="mx-auto max-w-2xl text-sm leading-relaxed text-jadora-text/70">
+            Προαιρετικές προσθήκες που ανεβάζουν το κόστος του πακέτου.
+            Η τελική τιμή είναι{" "}
+            <span className="font-medium text-mauve">κατόπιν συνεννόησης</span>.
+          </p>
+        </div>
+
+        <div className="mt-8 grid gap-4 sm:grid-cols-2">
+          {PACKAGE_EXTRAS.map((extra) => (
+            <article
+              key={extra.id}
+              className="rounded-[20px] border border-[color:var(--soft-pink)]/50 bg-white px-5 py-5 shadow-[var(--shadow-soft)] transition hover:-translate-y-0.5 hover:shadow-[var(--shadow-card)]"
+            >
+              <div className="flex items-start justify-between gap-3">
+                <div>
+                  <h4
+                    className="font-medium leading-snug"
+                    style={{ color: "#542D3D" }}
+                  >
+                    {extra.title}
+                  </h4>
+                  <p className="mt-1.5 text-sm leading-relaxed text-jadora-text/70">
+                    {extra.description}
+                  </p>
+                </div>
+                <span className="shrink-0 rounded-full bg-jadora-light px-3 py-1 text-[11px] font-medium text-mauve">
+                  Κατόπιν συνεννόησης
+                </span>
+              </div>
+            </article>
+          ))}
+        </div>
+
+        <p className="mt-6 text-center text-sm text-jadora-text/60">
+          Μπορείς να ζητήσεις extras κατά την κράτηση ή μέσω{" "}
+          <a href="#contact" className="text-mauve hover:underline">
+            επικοινωνίας
+          </a>
+          .
+        </p>
       </div>
     </section>
   );

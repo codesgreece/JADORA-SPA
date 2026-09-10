@@ -4,6 +4,7 @@ import { useCallback, useEffect, useState } from "react";
 import { BookingCalendar } from "./BookingCalendar";
 import { formatGreekDate, formatEuro, cn } from "@/lib/utils";
 import { Heart } from "lucide-react";
+import { PACKAGE_EXTRAS } from "@/components/public/PackagesSection";
 
 type Package = {
   id: string;
@@ -57,6 +58,7 @@ export function BookingWidget({
     girlsCount: 8,
     customerNotes: "",
   });
+  const [extras, setExtras] = useState<string[]>([]);
 
   const loadMonth = useCallback(async (y: number, m: number) => {
     setCalendarLoading(true);
@@ -98,11 +100,25 @@ export function BookingWidget({
     }
     setLoading(true);
     try {
+      const extrasNote =
+        extras.length > 0
+          ? `Extras: ${extras
+              .map(
+                (id) =>
+                  PACKAGE_EXTRAS.find((e) => e.id === id)?.title || id
+              )
+              .join(", ")} (κατόπιν συνεννόησης)`
+          : "";
+      const customerNotes = [form.customerNotes.trim(), extrasNote]
+        .filter(Boolean)
+        .join("\n");
+
       const res = await fetch("/api/bookings", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           ...form,
+          customerNotes,
           date: selectedDate,
           timeSlot: selectedTime,
           packageId: selectedPackage,
@@ -159,6 +175,7 @@ export function BookingWidget({
                 girlsCount: 8,
                 customerNotes: "",
               });
+              setExtras([]);
             }}
           >
             Νέα κράτηση
@@ -205,6 +222,45 @@ export function BookingWidget({
               setForm({ ...form, girlsCount: Number(e.target.value) })
             }
           />
+
+          <div className="rounded-2xl border border-[color:var(--soft-pink)]/40 bg-white p-3">
+            <p className="mb-2 text-xs font-medium uppercase tracking-wider text-jadora-text/55">
+              Extras (κατόπιν συνεννόησης)
+            </p>
+            <div className="space-y-2">
+              {PACKAGE_EXTRAS.map((extra) => {
+                const checked = extras.includes(extra.id);
+                return (
+                  <label
+                    key={extra.id}
+                    className="flex cursor-pointer items-start gap-2.5 text-sm text-jadora-text"
+                  >
+                    <input
+                      type="checkbox"
+                      className="mt-1 accent-[color:var(--mauve)]"
+                      checked={checked}
+                      onChange={() =>
+                        setExtras((prev) =>
+                          checked
+                            ? prev.filter((id) => id !== extra.id)
+                            : [...prev, extra.id]
+                        )
+                      }
+                    />
+                    <span>
+                      <span className="font-medium text-dark-berry">
+                        {extra.title}
+                      </span>
+                      <span className="block text-xs text-jadora-text/60">
+                        {extra.description}
+                      </span>
+                    </span>
+                  </label>
+                );
+              })}
+            </div>
+          </div>
+
           <textarea
             className="w-full rounded-xl border border-[color:var(--soft-pink)]/50 bg-white px-3 py-2.5 text-sm outline-none focus:border-mauve"
             placeholder="Σχόλια / ευχές"

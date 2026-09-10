@@ -14,6 +14,7 @@ const FIELDS: { key: string; label: string; multiline?: boolean }[] = [
   { key: "vibeText", label: "Vibe text" },
   { key: "servicesTitle", label: "Services title" },
   { key: "packagesTitle", label: "Packages title" },
+  { key: "extrasTitle", label: "Extras title" },
   { key: "partnersTitle", label: "Partners title" },
   { key: "galleryTitle", label: "Gallery title" },
   { key: "navPartners", label: "Nav: Partners" },
