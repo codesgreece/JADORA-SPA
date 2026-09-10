@@ -11,7 +11,7 @@ const createSchema = z.object({
   date: z.string().regex(/^\d{4}-\d{2}-\d{2}$/),
   timeSlot: z.string().min(4),
   packageId: z.string().min(1),
-  girlsCount: z.number().int().min(1).max(50).optional(),
+  girlsCount: z.coerce.number().int().min(1).max(50).optional(),
   customerNotes: z.string().optional(),
 });
 

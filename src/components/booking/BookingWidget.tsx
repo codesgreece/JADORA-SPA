@@ -48,6 +48,7 @@ export function BookingWidget({
   );
   const [step, setStep] = useState<Step>("datetime");
   const [loading, setLoading] = useState(false);
+  const [calendarLoading, setCalendarLoading] = useState(true);
   const [error, setError] = useState("");
   const [form, setForm] = useState({
     name: "",
@@ -58,10 +59,15 @@ export function BookingWidget({
   });
 
   const loadMonth = useCallback(async (y: number, m: number) => {
-    const res = await fetch(`/api/availability?year=${y}&month=${m}`);
-    if (!res.ok) return;
-    const data = await res.json();
-    setMonthStatuses(data.days || {});
+    setCalendarLoading(true);
+    try {
+      const res = await fetch(`/api/availability?year=${y}&month=${m}`);
+      if (!res.ok) return;
+      const data = await res.json();
+      setMonthStatuses(data.days || {});
+    } finally {
+      setCalendarLoading(false);
+    }
   }, []);
 
   useEffect(() => {
@@ -105,6 +111,8 @@ export function BookingWidget({
       const data = await res.json();
       if (!res.ok) throw new Error(data.error || "Σφάλμα κράτησης");
       setStep("success");
+      // refresh availability so slot shows as booked
+      loadMonth(year, month);
     } catch (e) {
       setError(e instanceof Error ? e.message : "Σφάλμα κράτησης");
     } finally {
@@ -264,11 +272,15 @@ export function BookingWidget({
             <BookingCalendar
               monthStatuses={monthStatuses}
               selectedDate={selectedDate}
-              onSelectDate={setSelectedDate}
+              onSelectDate={(date) => {
+                setError("");
+                setSelectedDate(date);
+              }}
               onMonthChange={(y, m) => {
                 setYear(y);
                 setMonth(m);
               }}
+              loading={calendarLoading}
             />
 
             <div className="flex flex-col">

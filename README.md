@@ -1,12 +1,12 @@
 # J’ADORA — Luxury Girls Spa Parties
 
-Premium boutique website + booking system + admin panel for J’ADORA Luxury Girls Spa Parties.
+Premium boutique website + interactive booking + admin panel.
 
 ## Stack
 
 - Next.js 15 (App Router)
 - TypeScript + Tailwind CSS 4
-- Prisma + SQLite
+- Prisma + PostgreSQL
 - NextAuth (credentials)
 
 ## Setup
@@ -14,7 +14,9 @@ Premium boutique website + booking system + admin panel for J’ADORA Luxury Gir
 ```bash
 npm install
 cp .env.example .env
-npm run db:setup
+# set DATABASE_URL to your Postgres connection string
+npx prisma db push
+npm run db:seed
 npm run dev
 ```
 
@@ -23,8 +25,7 @@ npm run dev
 - URL: `/admin/login`
 - Default: `admin@jadora.gr` / `jadora2026`
 
-## Features
+## Booking
 
-- Public marketing site matching brand mockup
-- Interactive booking calendar with double-booking prevention
-- Admin dashboard for bookings, availability, packages, services, gallery, content
+Public users select package → date → time → details → submit.
+Admin can approve/reject and block dates/slots. Double-booking is prevented.

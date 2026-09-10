@@ -202,7 +202,7 @@ async function main() {
           dayOfWeek: day,
           startTime: "10:00",
           endTime: "18:00",
-          enabled: day !== 1,
+          enabled: true,
         },
       });
     }

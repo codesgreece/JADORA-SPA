@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import {
   addMonths,
   eachDayOfInterval,
@@ -24,6 +24,7 @@ type Props = {
   selectedDate: string | null;
   onSelectDate: (date: string) => void;
   onMonthChange?: (year: number, month: number) => void;
+  loading?: boolean;
   compact?: boolean;
 };
 
@@ -32,6 +33,7 @@ export function BookingCalendar({
   selectedDate,
   onSelectDate,
   onMonthChange,
+  loading = false,
   compact = false,
 }: Props) {
   const initial = selectedDate
@@ -47,15 +49,28 @@ export function BookingCalendar({
     return eachDayOfInterval({ start, end });
   }, [current]);
 
+  // Keep parent month in sync on mount
+  useEffect(() => {
+    onMonthChange?.(current.getFullYear(), current.getMonth() + 1);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
   const changeMonth = (next: Date) => {
     setCurrent(next);
     onMonthChange?.(next.getFullYear(), next.getMonth() + 1);
   };
 
   const weekDays = ["Δε", "Τρ", "Τε", "Πε", "Πα", "Σα", "Κυ"];
+  const ready = Object.keys(monthStatuses).length > 0;
 
   return (
-    <div className={cn("w-full", compact ? "text-sm" : "")}>
+    <div className={cn("relative w-full", compact ? "text-sm" : "")}>
+      {loading && (
+        <div className="absolute inset-0 z-10 flex items-center justify-center rounded-2xl bg-white/60 text-sm text-mauve">
+          Φόρτωση...
+        </div>
+      )}
+
       <div className="mb-3 flex items-center justify-between">
         <button
           type="button"
@@ -78,7 +93,7 @@ export function BookingCalendar({
         </button>
       </div>
 
-      <div className="mb-2 grid grid-cols-7 gap-1 text-center text-xs font-medium text-muted-foreground text-[color:var(--muted)]">
+      <div className="mb-2 grid grid-cols-7 gap-1 text-center text-xs font-medium text-[color:var(--muted)]">
         {weekDays.map((d) => (
           <div key={d} className="py-1">
             {d}
@@ -90,42 +105,49 @@ export function BookingCalendar({
         {days.map((day) => {
           const key = format(day, "yyyy-MM-dd");
           const inMonth = isSameMonth(day, current);
-          const status = monthStatuses[key] || "unavailable";
+          const status = ready
+            ? monthStatuses[key] || "unavailable"
+            : "unavailable";
           const selected = selectedDate === key;
           const isToday = isSameDay(day, new Date());
           const clickable =
-            inMonth && (status === "available" || status === "booked");
+            ready &&
+            inMonth &&
+            (status === "available" || status === "booked");
 
           return (
             <button
               key={key}
               type="button"
               disabled={!clickable}
-              onClick={() => onSelectDate(key)}
+              onClick={(e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                if (clickable) onSelectDate(key);
+              }}
               className={cn(
-                "calendar-day relative flex h-9 w-full flex-col items-center justify-center rounded-full text-sm",
-                !inMonth && "opacity-0 pointer-events-none",
-                selected && "bg-[color:var(--mauve)] text-white font-semibold",
+                "calendar-day relative flex h-10 w-full flex-col items-center justify-center rounded-full text-sm touch-manipulation",
+                !inMonth && "pointer-events-none opacity-0",
+                selected && "bg-[color:var(--mauve)] font-semibold text-white",
                 !selected &&
                   status === "blocked" &&
                   "bg-[color:var(--dark-berry)] text-white/90",
+                !selected && status === "booked" && "font-medium text-dark-berry",
                 !selected &&
-                  status === "booked" &&
-                  !selected &&
-                  "text-dark-berry font-medium",
-                !selected && status === "unavailable" && "text-[color:var(--muted)]",
+                  status === "unavailable" &&
+                  "text-[color:var(--muted)]",
                 !selected &&
                   status === "available" &&
-                  "text-jadora-text hover:bg-jadora-light",
+                  "cursor-pointer text-jadora-text hover:bg-jadora-light active:bg-[color:var(--soft-pink)]",
                 isToday && !selected && "ring-1 ring-[color:var(--soft-pink)]"
               )}
             >
-              <span>{format(day, "d")}</span>
+              <span className="pointer-events-none">{format(day, "d")}</span>
               {inMonth && status === "available" && !selected && (
-                <span className="absolute bottom-1 h-1 w-1 rounded-full bg-[color:var(--soft-pink)]" />
+                <span className="pointer-events-none absolute bottom-1 h-1.5 w-1.5 rounded-full bg-[color:var(--soft-pink)]" />
               )}
               {inMonth && status === "booked" && !selected && (
-                <span className="absolute bottom-1 h-1 w-1 rounded-full bg-[color:var(--dark-berry)]" />
+                <span className="pointer-events-none absolute bottom-1 h-1.5 w-1.5 rounded-full bg-[color:var(--dark-berry)]" />
               )}
             </button>
           );
