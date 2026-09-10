@@ -1,3 +1,4 @@
+import "@/lib/env";
 import { PrismaClient } from "@prisma/client";
 import { copyFileSync, existsSync, mkdirSync } from "fs";
 import path from "path";
