@@ -57,26 +57,31 @@ export default async function AdminDashboardPage() {
       label: "Συνολικές κρατήσεις",
       value: String(totalBookings),
       icon: CalendarDays,
+      href: "/admin/bookings",
     },
     {
       label: "Νέες αυτόν τον μήνα",
       value: String(monthBookings),
       icon: Users,
+      href: "/admin/bookings",
     },
     {
       label: "Έσοδα μήνα",
       value: formatEuro(monthlyRevenue),
       icon: Euro,
+      href: undefined as string | undefined,
     },
     {
       label: "Νέα μηνύματα",
       value: String(unreadMessages),
       icon: MessageCircle,
+      href: "/admin/messages",
     },
     {
       label: "Ικανοποίηση",
       value: "98%",
       icon: Heart,
+      href: undefined as string | undefined,
     },
   ];
 
@@ -90,17 +95,32 @@ export default async function AdminDashboardPage() {
       </div>
 
       <div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-5">
-        {stats.map(({ label, value, icon: Icon }) => (
-          <div key={label} className="card-soft flex items-center gap-3 p-4">
-            <div className="flex h-11 w-11 items-center justify-center rounded-full bg-jadora-light text-mauve">
-              <Icon size={18} />
+        {stats.map(({ label, value, icon: Icon, href }) => {
+          const inner = (
+            <>
+              <div className="flex h-11 w-11 items-center justify-center rounded-full bg-jadora-light text-mauve">
+                <Icon size={18} />
+              </div>
+              <div>
+                <p className="text-xs text-jadora-text/55">{label}</p>
+                <p className="font-serif text-2xl text-dark-berry">{value}</p>
+              </div>
+            </>
+          );
+          return href ? (
+            <Link
+              key={label}
+              href={href}
+              className="card-soft flex items-center gap-3 p-4 transition hover:-translate-y-0.5"
+            >
+              {inner}
+            </Link>
+          ) : (
+            <div key={label} className="card-soft flex items-center gap-3 p-4">
+              {inner}
             </div>
-            <div>
-              <p className="text-xs text-jadora-text/55">{label}</p>
-              <p className="font-serif text-2xl text-dark-berry">{value}</p>
-            </div>
-          </div>
-        ))}
+          );
+        })}
       </div>
 
       <div className="grid gap-5 lg:grid-cols-[1.2fr_1fr_0.9fr]">
@@ -170,16 +190,39 @@ export default async function AdminDashboardPage() {
         <section className="card-soft p-5">
           <div className="mb-4 flex items-center justify-between">
             <h2 className="font-serif text-xl text-dark-berry">Μηνύματα</h2>
-            <Link href="/admin/settings#messages" className="text-sm text-mauve">
+            <Link href="/admin/messages" className="text-sm text-mauve">
               Όλα →
             </Link>
           </div>
           <div className="space-y-3">
+            {recentMessages.length === 0 && (
+              <p className="text-sm text-jadora-text/55">
+                Δεν υπάρχουν μηνύματα ακόμα.
+              </p>
+            )}
             {recentMessages.map((m) => (
-              <div key={m.id} className="rounded-xl bg-jadora-light/40 p-3">
-                <p className="text-sm font-medium text-dark-berry">{m.name}</p>
-                <p className="line-clamp-2 text-xs text-jadora-text/65">{m.body}</p>
-              </div>
+              <Link
+                key={m.id}
+                href="/admin/messages"
+                className="block rounded-xl bg-jadora-light/40 p-3 transition hover:bg-jadora-light/70"
+              >
+                <div className="flex items-center justify-between gap-2">
+                  <p className="text-sm font-medium text-dark-berry">{m.name}</p>
+                  {!m.read && (
+                    <span className="rounded-full bg-mauve px-2 py-0.5 text-[10px] text-white">
+                      Νέο
+                    </span>
+                  )}
+                </div>
+                <p className="text-xs text-jadora-text/55">
+                  {m.email}
+                  {m.phone ? ` · ${m.phone}` : ""}
+                </p>
+                <p className="mt-1 line-clamp-2 text-xs text-jadora-text/65">
+                  {m.subject ? `${m.subject} — ` : ""}
+                  {m.body}
+                </p>
+              </Link>
             ))}
           </div>
         </section>
