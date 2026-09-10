@@ -7,7 +7,7 @@ type Service = {
   icon: string;
 };
 
-const showcaseIcons = [
+const SHOWCASE_ORDER = [
   "manicure",
   "mask",
   "hair",
@@ -15,7 +15,18 @@ const showcaseIcons = [
   "glitter",
   "mirror",
   "photo",
-];
+] as const;
+
+/** Labels matching the mockup / design reference */
+const SHOWCASE_LABELS: Record<string, string> = {
+  manicure: "Μανικιούρ",
+  mask: "Μάσκα προσώπου",
+  hair: "Λαμπερά χτενίσματα",
+  makeup: "Απαλό παιδικό μακιγιάζ",
+  glitter: "Glitter bar",
+  mirror: "Καθρεφτάκια-δώρο",
+  photo: "Photo corner + props",
+};
 
 export function ServicesSection({
   title,
@@ -24,17 +35,23 @@ export function ServicesSection({
   title?: string;
   services: Service[];
 }) {
-  const showcase = showcaseIcons
-    .map((icon) => services.find((s) => s.icon === icon))
-    .filter(Boolean) as Service[];
+  const byIcon = Object.fromEntries(services.map((s) => [s.icon, s]));
 
-  const display =
-    showcase.length >= 5
-      ? showcase.slice(0, 7)
-      : services.slice(0, 7);
+  const display = SHOWCASE_ORDER.map((icon) => {
+    const service = byIcon[icon];
+    return {
+      id: service?.id || icon,
+      icon,
+      title: SHOWCASE_LABELS[icon],
+      description: service?.description || "",
+    };
+  });
 
   return (
-    <section id="services" className="relative mx-auto max-w-7xl px-4 py-12 md:px-8">
+    <section
+      id="services"
+      className="relative mx-auto max-w-7xl px-4 py-12 md:px-8"
+    >
       <div className="max-w-3xl">
         <h2 className="section-title">{title || "Οι υπηρεσίες μας"}</h2>
         <div className="heart-divider">
@@ -42,23 +59,36 @@ export function ServicesSection({
         </div>
       </div>
 
-      <div className="mt-2 grid grid-cols-2 gap-6 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-7">
+      {/* Showcase: 2-col mobile, 7-col desktop — large soft circles */}
+      <div className="mt-6 grid grid-cols-2 justify-items-center gap-x-5 gap-y-10 sm:gap-x-8 sm:gap-y-12 md:grid-cols-3 lg:grid-cols-7 lg:gap-x-3 lg:gap-y-8">
         {display.map((service) => (
           <div
             key={service.id}
-            className="group flex flex-col items-center text-center"
+            className="group flex w-full max-w-[188px] flex-col items-center text-center"
           >
-            <div className="mb-3 flex h-[88px] w-[88px] items-center justify-center rounded-full bg-[color:var(--light)] text-mauve shadow-[var(--shadow-soft)] transition group-hover:-translate-y-1 group-hover:shadow-[var(--shadow-card)]">
-              <ServiceIcon name={service.icon} className="h-9 w-9" />
+            <div
+              className="service-icon-circle mb-4 flex aspect-square w-full items-center justify-center rounded-full transition duration-300 group-hover:-translate-y-1"
+              style={{
+                background: "#FCE0E8",
+                boxShadow: "0 6px 20px rgba(171, 79, 130, 0.06)",
+              }}
+            >
+              <ServiceIcon
+                name={service.icon}
+                className="h-[36%] w-[36%]"
+              />
             </div>
-            <p className="text-sm leading-snug text-jadora-text">
+            <p
+              className="max-w-[11rem] text-[0.95rem] font-medium leading-snug tracking-[-0.01em]"
+              style={{ color: "#542D3D" }}
+            >
               {service.title}
             </p>
           </div>
         ))}
       </div>
 
-      <div className="mt-8 text-right">
+      <div className="mt-10 text-right">
         <a
           href="#all-services"
           className="text-sm text-mauve transition hover:text-dark-berry"
@@ -67,17 +97,25 @@ export function ServicesSection({
         </a>
       </div>
 
-      <div id="all-services" className="mt-14 grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+      <div
+        id="all-services"
+        className="mt-14 grid gap-4 md:grid-cols-2 lg:grid-cols-3"
+      >
         {services.map((service) => (
           <article
             key={`full-${service.id}`}
             className="card-soft flex gap-4 p-5 transition hover:-translate-y-0.5"
           >
-            <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-jadora-light text-mauve">
-              <ServiceIcon name={service.icon} className="h-6 w-6" />
+            <div
+              className="flex h-14 w-14 shrink-0 items-center justify-center rounded-full"
+              style={{ background: "#FCE0E8" }}
+            >
+              <ServiceIcon name={service.icon} className="h-7 w-7" />
             </div>
             <div>
-              <h3 className="font-medium text-dark-berry">{service.title}</h3>
+              <h3 className="font-medium" style={{ color: "#542D3D" }}>
+                {service.title}
+              </h3>
               <p className="mt-1 text-sm leading-relaxed text-jadora-text/75">
                 {service.description}
               </p>

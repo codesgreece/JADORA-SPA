@@ -23,27 +23,16 @@ export function Header({ content }: Props) {
 
   return (
     <header className="relative z-40">
-      <div className="mx-auto flex max-w-7xl items-center justify-between gap-4 px-4 py-4 md:px-8">
-        <Link href="/" className="flex items-center gap-3">
+      <div className="mx-auto flex max-w-7xl items-center justify-between gap-4 px-4 py-3 md:px-8 md:py-4">
+        <Link href="/" className="relative z-10 shrink-0" aria-label="J’ADORA Home">
           <Image
-            src="/logo.svg"
-            alt="J’ADORA"
-            width={64}
-            height={64}
-            className="h-14 w-14 md:h-16 md:w-16"
+            src="/logo.png"
+            alt="J’ADORA Luxury Girls Spa Parties by jo"
+            width={512}
+            height={512}
+            className="h-[72px] w-[72px] object-contain md:h-[88px] md:w-[88px]"
             priority
           />
-          <div className="leading-tight">
-            <div className="font-serif text-xl tracking-wide text-dark-berry md:text-2xl">
-              {content.brandName || "J’ADORA"}
-            </div>
-            <div className="text-[10px] uppercase tracking-[0.18em] text-jadora-text/65 md:text-[11px]">
-              {content.brandTagline || "Luxury Girls Spa Parties"}
-            </div>
-            <div className="text-[10px] italic text-mauve">
-              {content.brandByline || "by Jo"}
-            </div>
-          </div>
         </Link>
 
         <nav className="hidden items-center gap-6 lg:flex">

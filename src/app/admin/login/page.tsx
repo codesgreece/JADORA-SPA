@@ -34,9 +34,15 @@ export default function AdminLoginPage() {
     <div className="flex min-h-screen items-center justify-center bg-pearl px-4">
       <div className="card-soft w-full max-w-md p-8">
         <div className="mb-6 flex flex-col items-center text-center">
-          <Image src="/logo.svg" alt="J’ADORA" width={72} height={72} />
+          <Image
+            src="/logo.png"
+            alt="J’ADORA Luxury Girls Spa Parties by jo"
+            width={120}
+            height={120}
+            className="h-[110px] w-[110px] object-contain"
+            priority
+          />
           <h1 className="mt-3 font-serif text-2xl text-dark-berry">Admin Panel</h1>
-          <p className="text-sm text-jadora-text/65">J’ADORA Luxury Girls Spa Parties</p>
         </div>
         <form onSubmit={onSubmit} className="space-y-3">
           <input

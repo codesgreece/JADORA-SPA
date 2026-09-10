@@ -41,7 +41,13 @@ export function AdminSidebar() {
     <div className="flex h-full flex-col">
       <div className="border-b border-white/10 px-5 py-6">
         <div className="flex items-center gap-3">
-          <Image src="/logo.svg" alt="J’ADORA" width={48} height={48} />
+          <Image
+            src="/logo.png"
+            alt="J’ADORA"
+            width={56}
+            height={56}
+            className="h-14 w-14 rounded-full bg-white object-contain"
+          />
           <div>
             <div className="font-serif text-lg text-white">J’ADORA</div>
             <div className="text-[10px] uppercase tracking-wider text-white/55">
