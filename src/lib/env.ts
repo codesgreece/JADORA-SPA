@@ -13,13 +13,14 @@ export function ensureEnvDefaults() {
     } else if (process.env.VERCEL_URL) {
       process.env.NEXTAUTH_URL = `https://${process.env.VERCEL_URL}`;
     } else {
-      process.env.NEXTAUTH_URL = "https://jadora-spa.vercel.app";
+      process.env.NEXTAUTH_URL = "https://jadoragirlspa.gr";
     }
   }
-  // Persistent Prisma Postgres (claim at create-db.prisma.io if prompted)
+  // Persistent Prisma Postgres — CLAIM THIS DB or set DATABASE_URL in Vercel
+  // Claim: https://create-db.prisma.io/claim?projectID=proj_ph9u41fpi84zv547bzdra7sn
   if (!process.env.DATABASE_URL) {
     process.env.DATABASE_URL =
-      "postgres://13f178cc67fb4d57976e6d8bb894222ec5af3111fbee4f7e271dca3d0b8bd749:sk_DvG3xx5a8OOgNt3AmEdCU@db.prisma.io:5432/postgres?sslmode=require";
+      "postgres://784eb50dd5aba855a7c7fc2e2e52334f78f510f7bac0c2a9146ab464586c158a:sk_XDWtPtb4susAD0r5qf-j1@db.prisma.io:5432/postgres?sslmode=require";
   }
 }
 

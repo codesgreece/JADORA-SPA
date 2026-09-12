@@ -12,7 +12,20 @@ import { Footer } from "@/components/public/Footer";
 export const dynamic = "force-dynamic";
 
 export default async function HomePage() {
-  const { content, packages, services, gallery } = await getPublicData();
+  let content: Record<string, string> = {};
+  let packages: Awaited<ReturnType<typeof getPublicData>>["packages"] = [];
+  let services: Awaited<ReturnType<typeof getPublicData>>["services"] = [];
+  let gallery: Awaited<ReturnType<typeof getPublicData>>["gallery"] = [];
+
+  try {
+    const data = await getPublicData();
+    content = data.content;
+    packages = data.packages;
+    services = data.services;
+    gallery = data.gallery;
+  } catch (err) {
+    console.error("Failed to load public data:", err);
+  }
 
   return (
     <main className="relative min-h-screen bg-pearl">
