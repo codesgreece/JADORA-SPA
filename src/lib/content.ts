@@ -1,4 +1,5 @@
 import { prisma } from "./prisma";
+import { toGalleryPublicUrl } from "./gallery-url";
 
 export async function getSiteContentMap() {
   const rows = await prisma.siteContent.findMany();
@@ -9,7 +10,7 @@ export async function getSiteContentMap() {
 }
 
 export async function getPublicData() {
-  const [content, packages, services, gallery] = await Promise.all([
+  const [content, packages, services, galleryRows] = await Promise.all([
     getSiteContentMap(),
     prisma.package.findMany({
       where: { active: true },
@@ -24,6 +25,11 @@ export async function getPublicData() {
       orderBy: { sortOrder: "asc" },
     }),
   ]);
+
+  const gallery = galleryRows.map((img) => ({
+    ...img,
+    url: toGalleryPublicUrl(img),
+  }));
 
   return { content, packages, services, gallery };
 }

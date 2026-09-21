@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { z } from "zod";
 import { prisma } from "@/lib/prisma";
 import { requireAdmin } from "@/lib/admin-guard";
+import { deletePersistedGalleryImage } from "@/lib/gallery-storage";
 
 type Params = { params: Promise<{ id: string }> };
 
@@ -26,6 +27,10 @@ export async function DELETE(_req: NextRequest, { params }: Params) {
   const { error } = await requireAdmin();
   if (error) return error;
   const { id } = await params;
+  const existing = await prisma.galleryImage.findUnique({ where: { id } });
+  if (existing) {
+    await deletePersistedGalleryImage(existing.url);
+  }
   await prisma.galleryImage.delete({ where: { id } });
   return NextResponse.json({ ok: true });
 }

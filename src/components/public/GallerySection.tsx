@@ -1,4 +1,4 @@
-import Image from "next/image";
+import { GalleryImage } from "@/components/GalleryImage";
 
 type ImageItem = {
   id: string;
@@ -28,7 +28,7 @@ export function GallerySection({
             key={img.id}
             className="gallery-item mb-4 break-inside-avoid overflow-hidden rounded-[20px] shadow-[var(--shadow-soft)]"
           >
-            <Image
+            <GalleryImage
               src={img.url}
               alt={img.caption || "J’ADORA gallery"}
               width={800}

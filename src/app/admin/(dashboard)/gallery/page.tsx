@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import Image from "next/image";
+import { GalleryImage } from "@/components/GalleryImage";
 
 type ImageItem = {
   id: string;
@@ -16,6 +16,7 @@ export default function AdminGalleryPage() {
   const [caption, setCaption] = useState("");
   const [file, setFile] = useState<File | null>(null);
   const [message, setMessage] = useState("");
+  const [uploading, setUploading] = useState(false);
 
   const load = () =>
     fetch("/api/admin/gallery")
@@ -27,20 +28,31 @@ export default function AdminGalleryPage() {
   }, []);
 
   const upload = async () => {
-    if (!file) return;
+    if (!file || uploading) return;
     setMessage("");
-    const fd = new FormData();
-    fd.append("file", file);
-    fd.append("caption", caption);
-    const res = await fetch("/api/admin/gallery", { method: "POST", body: fd });
-    if (!res.ok) {
-      setMessage("Σφάλμα ανεβάσματος");
-      return;
+    setUploading(true);
+    try {
+      const fd = new FormData();
+      fd.append("file", file);
+      fd.append("caption", caption);
+      const res = await fetch("/api/admin/gallery", {
+        method: "POST",
+        body: fd,
+      });
+      const data = await res.json().catch(() => ({}));
+      if (!res.ok) {
+        setMessage(data.error || "Σφάλμα ανεβάσματος");
+        return;
+      }
+      setFile(null);
+      setCaption("");
+      setMessage("Ανέβηκε επιτυχώς και θα εμφανιστεί στο site.");
+      load();
+    } catch {
+      setMessage("Σφάλμα ανεβάσματος. Δοκιμάστε ξανά.");
+    } finally {
+      setUploading(false);
     }
-    setFile(null);
-    setCaption("");
-    setMessage("Ανέβηκε επιτυχώς.");
-    load();
   };
 
   const move = async (id: string, dir: -1 | 1) => {
@@ -68,9 +80,12 @@ export default function AdminGalleryPage() {
 
       <div className="card-soft space-y-3 p-5">
         <h2 className="font-serif text-xl text-dark-berry">Ανέβασμα</h2>
+        <p className="text-xs text-jadora-text/60">
+          JPG, PNG, WEBP ή GIF — έως 2.5MB ανά φωτογραφία.
+        </p>
         <input
           type="file"
-          accept="image/*"
+          accept="image/jpeg,image/png,image/webp,image/gif"
           onChange={(e) => setFile(e.target.files?.[0] || null)}
         />
         <input
@@ -79,8 +94,13 @@ export default function AdminGalleryPage() {
           value={caption}
           onChange={(e) => setCaption(e.target.value)}
         />
-        <button type="button" className="btn-primary" onClick={upload}>
-          Upload
+        <button
+          type="button"
+          className="btn-primary disabled:opacity-60"
+          onClick={upload}
+          disabled={!file || uploading}
+        >
+          {uploading ? "Ανέβασμα..." : "Upload"}
         </button>
         {message && <p className="text-sm text-mauve">{message}</p>}
       </div>
@@ -88,7 +108,7 @@ export default function AdminGalleryPage() {
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
         {images.map((img) => (
           <div key={img.id} className="card-soft overflow-hidden">
-            <Image
+            <GalleryImage
               src={img.url}
               alt={img.caption}
               width={600}
