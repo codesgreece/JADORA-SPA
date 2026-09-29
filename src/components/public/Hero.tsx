@@ -63,8 +63,8 @@ export function Hero({ content, packages }: Props) {
             <Image
               src="/hero-spa.jpg"
               alt="J’ADORA Girls Spa Party"
-              width={640}
-              height={720}
+              width={1221}
+              height={1600}
               className="h-auto w-full object-cover"
               priority
             />
