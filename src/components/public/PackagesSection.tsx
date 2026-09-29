@@ -79,8 +79,8 @@ export function PackagesSection({
               </p>
             )}
             <Heart size={18} className="mt-6 text-mauve" strokeWidth={1.5} />
-            <a href="#booking" className="btn-primary mt-5 text-sm">
-              Κράτηση
+            <a href="#contact" className="btn-primary mt-5 text-sm">
+              Επικοινωνία
             </a>
           </article>
         ))}
@@ -128,7 +128,7 @@ export function PackagesSection({
         </div>
 
         <p className="mt-6 text-center text-sm text-jadora-text/60">
-          Μπορείς να ζητήσεις extras κατά την κράτηση ή μέσω{" "}
+          Μπορείς να ζητήσεις extras μέσω{" "}
           <a href="#contact" className="text-mauve hover:underline">
             επικοινωνίας
           </a>

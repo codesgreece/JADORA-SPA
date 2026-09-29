@@ -14,7 +14,6 @@ const links = [
   { href: "#services", key: "navServices", fallback: "Υπηρεσίες" },
   { href: "#packages", key: "navPackages", fallback: "Πακέτα" },
   { href: "#partners", key: "navPartners", fallback: "Συνεργάτες" },
-  { href: "#booking", key: "navCalendar", fallback: "Ημερολόγιο" },
   { href: "#about", key: "navAbout", fallback: "Σχετικά" },
   { href: "#contact", key: "navContact", fallback: "Επικοινωνία" },
 ];
@@ -49,8 +48,8 @@ export function Header({ content }: Props) {
         </nav>
 
         <div className="flex items-center gap-2">
-          <a href="#booking" className="btn-primary hidden text-sm sm:inline-flex">
-            {content.ctaBook || "Κράτηση τώρα ♡"}
+          <a href="#contact" className="btn-primary hidden text-sm sm:inline-flex">
+            {content.ctaContact || "Επικοινωνία ♡"}
           </a>
           <button
             type="button"
@@ -77,11 +76,11 @@ export function Header({ content }: Props) {
               </a>
             ))}
             <a
-              href="#booking"
+              href="#contact"
               className="btn-primary mt-2 text-center text-sm"
               onClick={() => setOpen(false)}
             >
-              {content.ctaBook || "Κράτηση τώρα ♡"}
+              {content.ctaContact || "Επικοινωνία ♡"}
             </a>
           </div>
         </div>

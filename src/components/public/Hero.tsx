@@ -2,23 +2,12 @@
 
 import Image from "next/image";
 import { Heart } from "lucide-react";
-import { BookingWidget } from "@/components/booking/BookingWidget";
-
-type Package = {
-  id: string;
-  name: string;
-  maxGirls: number;
-  durationHrs: number;
-  price: number;
-  featured: boolean;
-};
 
 type Props = {
   content: Record<string, string>;
-  packages: Package[];
 };
 
-export function Hero({ content, packages }: Props) {
+export function Hero({ content }: Props) {
   const titleLines = (content.heroTitle || "").split("\n").filter(Boolean);
   const paragraphs = (content.heroDescription || "")
     .split(/\n\n+/)
@@ -36,7 +25,7 @@ export function Hero({ content, packages }: Props) {
         aria-hidden
       />
 
-      <div className="relative z-10 mx-auto grid max-w-7xl items-start gap-8 px-4 md:px-8 lg:grid-cols-[1.05fr_1fr_0.95fr] lg:gap-6">
+      <div className="relative z-10 mx-auto grid max-w-7xl items-center gap-8 px-4 md:px-8 lg:grid-cols-[1.05fr_0.95fr] lg:gap-12">
         <div className="fade-in max-w-xl pt-4 lg:pt-8">
           <h1 className="font-serif text-[1.85rem] leading-[1.25] text-dark-berry md:text-[2.35rem] lg:text-[2.55rem]">
             {titleLines.map((line) => (
@@ -53,12 +42,17 @@ export function Hero({ content, packages }: Props) {
               <p key={p.slice(0, 24)}>{p}</p>
             ))}
           </div>
-          <a href="#about" className="btn-primary mt-6 text-sm">
-            {content.heroCta || "Μάθε περισσότερα →"}
-          </a>
+          <div className="mt-6 flex flex-wrap gap-3">
+            <a href="#about" className="btn-primary text-sm">
+              {content.heroCta || "Μάθε περισσότερα →"}
+            </a>
+            <a href="#contact" className="btn-primary text-sm">
+              Επικοινωνία ♡
+            </a>
+          </div>
         </div>
 
-        <div className="relative mx-auto w-full max-w-md image-reveal lg:max-w-none lg:pt-4">
+        <div className="relative mx-auto w-full max-w-md image-reveal lg:max-w-lg lg:justify-self-end">
           <div className="torn-edge relative overflow-hidden rounded-[2rem]">
             <Image
               src="/hero-spa.jpg"
@@ -77,14 +71,6 @@ export function Hero({ content, packages }: Props) {
               </div>
             </div>
           </div>
-        </div>
-
-        <div id="booking" className="soft-scale lg:pt-2">
-          <BookingWidget
-            packages={packages}
-            title={content.bookingTitle}
-            subtitle={content.bookingSubtitle}
-          />
         </div>
       </div>
     </section>

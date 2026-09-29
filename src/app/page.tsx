@@ -30,7 +30,7 @@ export default async function HomePage() {
   return (
     <main className="relative min-h-screen bg-pearl">
       <Header content={content} />
-      <Hero content={content} packages={packages} />
+      <Hero content={content} />
       <FeatureBar vibeText={content.vibeText} />
       <ServicesSection title={content.servicesTitle} services={services} />
       <PackagesSection
