@@ -59,9 +59,27 @@ export function AboutContact({ content }: { content: Record<string, string> }) {
               {content.contactTitle || "Επικοινωνία"}
             </h2>
             <div className="mt-4 space-y-1 text-sm text-jadora-text/80">
-              <p>{content.contactEmail}</p>
-              <p>{content.contactPhone}</p>
-              <p>{content.contactAddress}</p>
+              {content.contactEmail && (
+                <p>
+                  <a
+                    href={`mailto:${content.contactEmail}`}
+                    className="hover:text-mauve"
+                  >
+                    {content.contactEmail}
+                  </a>
+                </p>
+              )}
+              {content.contactPhone && (
+                <p>
+                  <a
+                    href={`tel:${content.contactPhone.replace(/\s+/g, "")}`}
+                    className="hover:text-mauve"
+                  >
+                    {content.contactPhone}
+                  </a>
+                </p>
+              )}
+              {content.contactAddress && <p>{content.contactAddress}</p>}
             </div>
 
             {status === "done" ? (

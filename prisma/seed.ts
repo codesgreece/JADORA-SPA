@@ -32,14 +32,14 @@ const siteContent: Record<string, string> = {
   socialInstagram: "https://instagram.com/jadora",
   socialFacebook: "https://facebook.com/jadora",
   footerText: "© J’ADORA Luxury Girls Spa Parties — Με αγάπη, by Jo",
-  seoTitle: "J’ADORA | Luxury Girls Spa Parties",
+  seoTitle: "J’ADORA Girls Spa Parties | Παιδικά Spa Party στην Αθήνα",
   seoDescription:
-    "Παιδικά spa parties για κορίτσια από 4 ετών. Boutique εμπειρίες ομορφιάς, δημιουργικότητας και χαμόγελου.",
-  ctaBook: "Κράτηση τώρα ♡",
+    "Girls Spa Parties στην Αθήνα για μοναδικά παιδικά πάρτι. Μανικιούρ, glitter, χτενίσματα, παιδικό μακιγιάζ και θεματικά spa party πακέτα για αξέχαστες στιγμές.",
+  ctaContact: "Επικοινωνία ♡",
   navHome: "Αρχική",
   navServices: "Υπηρεσίες",
   navPackages: "Πακέτα",
-  navCalendar: "Ημερολόγιο",
+  navPartners: "Συνεργάτες",
   navAbout: "Σχετικά",
   navContact: "Επικοινωνία",
 };

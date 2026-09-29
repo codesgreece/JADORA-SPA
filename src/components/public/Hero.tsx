@@ -56,7 +56,7 @@ export function Hero({ content }: Props) {
           <div className="torn-edge relative overflow-hidden rounded-[2rem]">
             <Image
               src="/hero-spa.jpg"
-              alt="J’ADORA Girls Spa Party"
+              alt="J’ADORA Girls Spa Party — κορίτσια σε παιδικό spa party με ρόμπες και μάσκες ομορφιάς"
               width={1221}
               height={1600}
               className="h-auto w-full object-cover"

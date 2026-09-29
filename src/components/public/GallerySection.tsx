@@ -30,7 +30,10 @@ export function GallerySection({
           >
             <GalleryImage
               src={img.url}
-              alt={img.caption || "J’ADORA gallery"}
+              alt={
+                img.caption?.trim() ||
+                "Στιγμή από Girls Spa Party J’ADORA στην Αθήνα"
+              }
               width={800}
               height={i % 3 === 0 ? 1000 : 800}
               className="h-auto w-full object-cover"
